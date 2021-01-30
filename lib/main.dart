@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plastic_island/request.dart';
 
 void main() {
@@ -33,7 +36,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final _picker = ImagePicker();
+  File _image;
+  bool hasImage=false;
+
 
   @override
   void initState() {
@@ -47,11 +53,102 @@ class _MyHomePageState extends State<MyHomePage> {
     print(decodedData['query']);
   }
 
-  final tab = new TabBar(tabs: <Tab>[
-    new Tab(icon: new Icon(Icons.arrow_forward)),
-    new Tab(icon: new Icon(Icons.arrow_downward)),
-    new Tab(icon: new Icon(Icons.arrow_back)),
-  ]);
+  void getImageFromCamera(ImageSource source) async {
+    PickedFile pickedFile = await _picker.getImage(source: source);
+
+    File image = File(pickedFile.path);
+
+    if (image == null) return;
+
+    setState(() {
+      _image = image;
+      hasImage=true;
+    });
+
+  }
+  Widget emblemPage(){
+    return Container(
+        width:MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/Emblem_background.jpg'),
+                fit: BoxFit.cover
+            )
+        ),
+        child:
+        Column(
+            children:[
+              SizedBox(height:20),
+              Image(image:AssetImage('images/Emblem_1.png')),
+              Text("Did you recycled plastic? Get new Emblem!",style: TextStyle(color: Colors.green,fontSize: 20)),
+              SizedBox(height:30),
+              GestureDetector(
+                onTap: (){
+                },
+                child: Container(
+                  width: 130,
+                  height: 50,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    color: Colors.green
+                  ),
+                  child: Text("YES!",style: TextStyle(color: Colors.white, fontSize: 20))
+                ),
+              ),
+              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 240,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('images/Emblem_2.png'),
+                      fit: BoxFit.fill
+                    ),
+                  ),
+              )
+            ]));
+  }
+  Widget cameraPage(){
+    return Container(
+
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/Emblem_background.jpg'),
+          fit: BoxFit.cover
+        )
+      ),
+      child: hasImage?Container(
+        width:MediaQuery.of(context).size.width,
+        height: 500,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(_image.toString()),
+            fit: BoxFit.cover
+          )
+        ),
+      )
+          :
+      Column(
+          children:[
+            SizedBox(height:150),
+            Text("Take a Photo of Plastic Waste!", style: TextStyle(color: Colors.green, fontSize:30)),
+        GestureDetector(
+          onTap: (){
+            getImageFromCamera(ImageSource.camera);
+
+          },
+          child:Container(
+              child: Icon(Icons.camera_alt,size:200)
+        )
+        )
+      ])
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -70,41 +167,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   title: Center(child: Text("Plastic Island")),
                   bottom: TabBar(
                       tabs: [
-
                         Tab(text: "Emblem"),
-
                         Tab(text: "Camera"),
-
                         Tab(text: "My Green Card")
-
                       ]
-
                   )
-
               ),
 
               body: TabBarView(
-
                   children: [
-
-                    Image(image:AssetImage('images/cat.jpg')),
-
-                    Image(image:AssetImage('images/dog.jpg')),
-
+                    emblemPage(),
+                    cameraPage(),
                     Image(image:AssetImage('images/rabbit.jpg'))
-
                   ]
-
               ),
-
-              floatingActionButton: FloatingActionButton(
-
+              /*floatingActionButton: FloatingActionButton(
                 onPressed: _test ,
-
                 tooltip: 'Increment',
-
                 child: Icon(Icons.add),
-              ),
+              ),*/
             )
         )
     );
