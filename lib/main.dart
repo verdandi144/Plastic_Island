@@ -41,12 +41,19 @@ class _MyHomePageState extends State<MyHomePage> {
   bool hasImage=false;
 
 
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
+
   }
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _test() async{
     var data = await getData('http://10.0.2.2:5000/');
         var decodedData = jsonDecode(data);
@@ -78,10 +85,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         child:
         Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children:[
-              SizedBox(height:20),
+
               Image(image:AssetImage('images/Emblem_1.png')),
-              Text("Did you recycled plastic? Get new Emblem!",style: TextStyle(color: Colors.green,fontSize: 20)),
+              Text("Did you recycled plastic? Get new Emblem!",style: TextStyle(color: Colors.green,fontSize: 15)),
               SizedBox(height:30),
               GestureDetector(
                 onTap: (){
@@ -98,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   child: Text("YES!",style: TextStyle(color: Colors.white, fontSize: 20))
                 ),
-              ),
+              ),SizedBox(height:15),
               Container(
                   width: MediaQuery.of(context).size.width,
                   height: 240,
@@ -121,28 +130,60 @@ class _MyHomePageState extends State<MyHomePage> {
           fit: BoxFit.cover
         )
       ),
-      child: hasImage?Container(
-        width:MediaQuery.of(context).size.width,
-        height: 500,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(_image.toString()),
-            fit: BoxFit.cover
-          )
-        ),
-      )
+      child: hasImage?
+        Column(children: [
+          SizedBox(height:30),
+          Container(
+            width:300,
+            height: 500,
+
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white,width: 2),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10)
+              ),
+                image: DecorationImage(
+                    image: FileImage(_image),
+                    fit: BoxFit.cover
+                )
+            ),
+          ),SizedBox(height:20),
+          GestureDetector(
+            onTap: (){
+              setState(() {
+                hasImage=false;
+                _image=null;
+
+              });
+            },
+              child: Container(
+                  width:100,
+                  height:50,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white,width: 1),
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      ),
+                    color: Colors.green,
+                  ),
+            child: Icon(Icons.delete,size: 50, color: Colors.white,)
+          ))
+        ])
+
+
           :
       Column(
+
           children:[
             SizedBox(height:150),
-            Text("Take a Photo of Plastic Waste!", style: TextStyle(color: Colors.green, fontSize:30)),
+            Text("Take a Photo of Plastic Waste!", style: TextStyle(color: Colors.green, fontSize:25)),
+        Icon(Icons.arrow_downward_rounded,size: 50, color: Colors.grey),
         GestureDetector(
           onTap: (){
             getImageFromCamera(ImageSource.camera);
-
           },
           child:Container(
-              child: Icon(Icons.camera_alt,size:200)
+              child: Icon(Icons.camera_alt,size:200,color: Colors.green,)
         )
         )
       ])
