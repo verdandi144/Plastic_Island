@@ -47,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String plasticType='';
   String confidence='';
   int emblemCount=0;
-  var point;
+  int point=0;
 
 
 
@@ -94,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
       dialogType: DialogType.SUCCES,
       animType: AnimType.BOTTOMSLIDE,
       title: 'Congratulations!',
-      desc: 'You got bonus \$4.0',
+      desc: 'You got bonus \$4',
       btnOkOnPress: () {},
     )..show();
 
@@ -122,12 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 onTap: (){
                   setState(() {
                     if(emblemCount==11){
-                      emblemCount = 0;
-                      point += 4.0;
                       congratulation(context);
+                      emblemCount = 0;
+                      point += 4;
+
                     }else if(emblemCount<12){
                       emblemCount += 1;
-                      point += 0.5;
+                      point += 1;
 
                     }
                   });
@@ -186,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem2.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -211,7 +212,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem3.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -236,7 +237,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem12.png'),
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -272,7 +273,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem5.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -296,7 +297,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem6.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -321,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem7.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -346,7 +347,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem8.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -382,7 +383,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem9.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -406,7 +407,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem10.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -431,7 +432,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem11.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -457,7 +458,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
 
                             image: DecorationImage(
-                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                image: AssetImage('images/Emblem/Emblem4.png') ,
                                 fit: BoxFit.cover
                             ),
                           ),
@@ -586,13 +587,12 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Text('My Point', style: TextStyle(color: Colors.white,fontSize: 20)),
               color: Colors.green,
             ),
-
             SizedBox(width:15),
             Container(
               width: 150,
               height:50,
               alignment: Alignment.center,
-              child: Text(point.toString(),style: TextStyle(fontSize: 20)),
+              child: Text("\$ ${point.toString()}",style: TextStyle(fontSize: 20)),
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey,width: 2),
                   borderRadius: BorderRadius.all(
