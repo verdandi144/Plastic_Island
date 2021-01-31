@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
   String result='';
   String plasticType='';
   String confidence='';
+  int emblemCount=0;
+  var point;
+
 
 
   @override
@@ -58,12 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-
-  void _test() async {
-    var data = await getData('http://10.0.2.2:5000/');
-        var decodedData = jsonDecode(data);
-    print(decodedData['query']);
-  }
 
   Future classifyImage() async {
     await Tflite.loadModel(model: "plastic/converted_model.tflite",labels: "plastic/labels.txt");
@@ -89,6 +87,18 @@ class _MyHomePageState extends State<MyHomePage> {
 
   }
 
+  void congratulation(BuildContext context) {
+
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'Congratulations!',
+      desc: 'You got bonus \$4.0',
+      btnOkOnPress: () {},
+    )..show();
+
+  }
   Widget emblemPage(){
     return Container(
         width:MediaQuery.of(context).size.width,
@@ -99,42 +109,371 @@ class _MyHomePageState extends State<MyHomePage> {
                 fit: BoxFit.cover
             )
         ),
-        child:
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children:[
 
+              SizedBox(height:30),
               Image(image:AssetImage('images/Emblem_1.png')),
               Text("Did you recycled plastic? Get new Emblem!",style: TextStyle(color: Colors.green,fontSize: 15)),
               SizedBox(height:30),
               GestureDetector(
                 onTap: (){
+                  setState(() {
+                    if(emblemCount==11){
+                      emblemCount = 0;
+                      point += 4.0;
+                      congratulation(context);
+                    }else if(emblemCount<12){
+                      emblemCount += 1;
+                      point += 0.5;
+
+                    }
+                  });
                 },
                 child: Container(
-                  width: 130,
-                  height: 50,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+                    width: 130,
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                        color: Colors.green
                     ),
-                    color: Colors.green
-                  ),
-                  child: Text("YES!",style: TextStyle(color: Colors.white, fontSize: 20))
+                    child: Text("YES!",style: TextStyle(color: Colors.white, fontSize: 20))
                 ),
-              ),SizedBox(height:15),
+              ),
               Container(
+                  margin: EdgeInsets.all(10),
                   width: MediaQuery.of(context).size.width,
-                  height: 240,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('images/Emblem_2.png'),
-                      fit: BoxFit.fill
+                  height:60,
+                  child:Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        emblemCount>=1?Container(
+                  width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(60),
+                      ),
+                      color: Colors.white,
+
+                      image: DecorationImage(
+                          image: AssetImage('images/Emblem/Emblem1.png') ,
+                          fit: BoxFit.cover
+                      ),
                     ),
-                  ),
-              )
+                  ) : Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=2?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=3?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=4?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                          ),
+                        ),
+
+
+                      ])),
+              Container(
+                  margin: EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width,
+                  height:60,
+                  child:Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        emblemCount>=5?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) : Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=6?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=7?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=8?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                          ),
+                        ),
+
+
+                      ])),
+              Container(
+                  margin: EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width,
+                  height:60,
+                  child:Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        emblemCount>=9?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) : Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=10?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=11?Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                        emblemCount>=12?
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+
+                            image: DecorationImage(
+                                image: AssetImage('images/Emblem/Emblem1.png') ,
+                                fit: BoxFit.cover
+                            ),
+                          ),
+                        ) :
+                        Container(
+                          width: 60,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(60),
+                            ),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ])),
+
             ]));
   }
   Widget cameraPage(){
@@ -253,7 +592,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 150,
               height:50,
               alignment: Alignment.center,
-              child: Text("\$ 10000",style: TextStyle(fontSize: 20)),
+              child: Text(point.toString(),style: TextStyle(fontSize: 20)),
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey,width: 2),
                   borderRadius: BorderRadius.all(
