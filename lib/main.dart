@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:bubble/bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plastic_island/request.dart';
 import 'package:tflite/tflite.dart';
@@ -48,6 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String confidence='';
   int emblemCount=0;
   int point=0;
+  FToast fToast;
 
 
 
@@ -55,6 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    fToast = FToast();
+    fToast.init(context);
   }
 
   @override
@@ -83,8 +87,58 @@ class _MyHomePageState extends State<MyHomePage> {
       path = image.path;
 
     });
+    if(_image != null){
+      classifyImage().then((_){
+
+        if(result.contains("pvc")){
+          setState(() {
+            plasticType = "PVC";
+          });
+        }else if(result.contains("합성고무")){
+          setState(() {
+            plasticType = "Synthetic rubber";
+          });
+        }else if(result.contains("pet")){
+          setState(() {
+            plasticType = "PET";
+          });
+        }else if(result.contains("hdpe")){
+          setState(() {
+            plasticType = "HDPE";
+          });
+        }else {
+          setState(() {
+            plasticType = "Error";
+          });
+        }
+      });
+    }
 
 
+  }
+  _showToast() {
+    Widget toast = Container(
+      padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 12.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        color: Color(0xaa00ff00),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.check,color: Colors.white,),
+          SizedBox(
+            width: 12.0,
+          ),
+          Text("+1 dollar",style: TextStyle(color:Colors.white)),
+        ],
+      ),
+    );
+    fToast.showToast(
+      child: toast,
+      gravity: ToastGravity.BOTTOM,
+      toastDuration: Duration(seconds: 1),
+    );
   }
 
   void congratulation(BuildContext context) {
@@ -127,6 +181,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       point += 4;
 
                     }else if(emblemCount<12){
+                      _showToast();
                       emblemCount += 1;
                       point += 1;
 
@@ -526,10 +581,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 ))
 
           ]),
-          result==null? Text("no result") :
+          result==null? Text("Model don't know this Image. sorry") :
 
               Column(
               children: [
+                SizedBox(height:5),
                 plasticType=="PVC"? Text("Recycled!", style : TextStyle(color: Colors.green, fontSize: 25,fontWeight: FontWeight.bold)):
                 plasticType=="Melamine"? Text("Not Recycled!", style : TextStyle(color: Colors.red, fontSize: 25,fontWeight: FontWeight.bold)):
                 plasticType=="Synthetic rubber"? Text("Not Recycled!", style : TextStyle(color: Colors.red, fontSize: 25,fontWeight: FontWeight.bold)):
@@ -555,32 +611,10 @@ class _MyHomePageState extends State<MyHomePage> {
             Text("Take a Photo of Plastic Waste!", style: TextStyle(color: Colors.green, fontSize:25)),
         Icon(Icons.arrow_downward_rounded,size: 50, color: Colors.grey),
         GestureDetector(
-          onTap: (){
+          onTap: ()async {
             getImageFromCamera(ImageSource.camera);
-            classifyImage().then((_){
 
-              if(result.contains("pvc")){
-                setState(() {
-                  plasticType = "PVC";
-                });
-              }else if(result.contains("합성고무")){
-                setState(() {
-                  plasticType = "Synthetic rubber";
-                });
-              }else if(result.contains("pet")){
-                setState(() {
-                  plasticType = "PET";
-                });
-              }else if(result.contains("hdpe")){
-                setState(() {
-                  plasticType = "HDPE";
-                });
-              }else {
-                setState(() {
-                  plasticType = "Error";
-                });
-              }
-            });
+
 
 
           },
