@@ -1,0 +1,5 @@
+0 pvc
+1 melamine
+2  합성고무
+3 pet
+4 hdpe

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:plastic_island/request.dart';
+import 'package:tflite/tflite.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,41 +36,51 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   final _picker = ImagePicker();
   File _image;
   bool hasImage=false;
-
-
+  String path;
+  String result;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-
   }
+
   @override
   void dispose() {
     super.dispose();
   }
 
-  void _test() async{
+  void _test() async {
     var data = await getData('http://10.0.2.2:5000/');
         var decodedData = jsonDecode(data);
     print(decodedData['query']);
   }
 
+  Future classifyImage() async {
+    await Tflite.loadModel(model: "plastic/converted_model.tflite",labels: "plastic/labels.txt");
+    var output = await Tflite.runModelOnImage(path: path);
+    setState(() {
+      result = output.toString();
+    });
+  }
+
   void getImageFromCamera(ImageSource source) async {
+
     PickedFile pickedFile = await _picker.getImage(source: source);
-
     File image = File(pickedFile.path);
-
     if (image == null) return;
 
     setState(() {
       _image = image;
       hasImage=true;
+      path = image.path;
+
     });
+
 
   }
   Widget emblemPage(){
@@ -123,7 +133,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   Widget cameraPage(){
     return Container(
-
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage('images/Emblem_background.jpg'),
@@ -136,7 +145,6 @@ class _MyHomePageState extends State<MyHomePage> {
           Container(
             width:300,
             height: 500,
-
             decoration: BoxDecoration(
               border: Border.all(color: Colors.white,width: 2),
               borderRadius: BorderRadius.all(
@@ -147,27 +155,28 @@ class _MyHomePageState extends State<MyHomePage> {
                     fit: BoxFit.cover
                 )
             ),
-          ),SizedBox(height:20),
-          GestureDetector(
-            onTap: (){
-              setState(() {
-                hasImage=false;
-                _image=null;
-
-              });
-            },
-              child: Container(
-                  width:100,
-                  height:50,
-                  decoration: BoxDecoration(
+          ),
+            GestureDetector(
+                onTap: (){
+                  setState(() {
+                    hasImage=false;
+                    _image=null;
+                  });
+                },
+                child: Container(
+                    width:100,
+                    height:50,
+                    decoration: BoxDecoration(
                       border: Border.all(color: Colors.white,width: 1),
                       borderRadius: BorderRadius.all(
                           Radius.circular(10)
                       ),
-                    color: Colors.green,
-                  ),
-            child: Icon(Icons.delete,size: 50, color: Colors.white,)
-          ))
+                      color: Colors.green,
+                    ),
+                    child: Icon(Icons.delete,size: 50, color: Colors.white,)
+                )),
+          result==null?Text("no result") : Text(result)
+
         ])
 
 
@@ -181,6 +190,7 @@ class _MyHomePageState extends State<MyHomePage> {
         GestureDetector(
           onTap: (){
             getImageFromCamera(ImageSource.camera);
+            classifyImage();
           },
           child:Container(
               child: Icon(Icons.camera_alt,size:200,color: Colors.green,)

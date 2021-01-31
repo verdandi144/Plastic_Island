@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   http: ^0.12.2
   image_picker: ^0.6.7+22
+  tflite: ^1.1.1
 
 
 
@@ -54,6 +55,7 @@ flutter:
 
   assets:
     - images/
+    - plastic/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
