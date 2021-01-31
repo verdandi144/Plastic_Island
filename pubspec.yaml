@@ -1,4 +1,4 @@
-name: plastic_island
+name: PlasticIsland
 description: This app is plastic island
 
 # The following line prevents the package from being accidentally published to
@@ -40,6 +40,12 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  flutter_launcher_icons: "^0.7.2"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/main_icon.jpg"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
