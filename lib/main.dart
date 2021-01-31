@@ -526,18 +526,23 @@ class _MyHomePageState extends State<MyHomePage> {
                 ))
 
           ]),
-          result==null? Text("no result") : Column(
+          result==null? Text("no result") :
+
+              Column(
               children: [
                 plasticType=="PVC"? Text("Recycled!", style : TextStyle(color: Colors.green, fontSize: 25,fontWeight: FontWeight.bold)):
                 plasticType=="Melamine"? Text("Not Recycled!", style : TextStyle(color: Colors.red, fontSize: 25,fontWeight: FontWeight.bold)):
                 plasticType=="Synthetic rubber"? Text("Not Recycled!", style : TextStyle(color: Colors.red, fontSize: 25,fontWeight: FontWeight.bold)):
                 plasticType=="PET"? Text("Recycled!", style : TextStyle(color: Colors.green, fontSize: 25,fontWeight: FontWeight.bold)):
-                plasticType=="HDPE"? Text("Recycled!", style : TextStyle(color: Colors.green, fontSize: 25,fontWeight: FontWeight.bold)): SizedBox.shrink(),
+                plasticType=="HDPE"? Text("Recycled!", style : TextStyle(color: Colors.green, fontSize: 25,fontWeight: FontWeight.bold)):
+                plasticType=="Error"? Text("Not Recycled!", style : TextStyle(color: Colors.red, fontSize: 25,fontWeight: FontWeight.bold)):SizedBox.shrink(),
+                SizedBox(height: 10),
 
                 plasticType=="PET"? Text("This is a recyclable \"$plasticType\", don't forget to remove the label paper and dispose :)", style: TextStyle(fontSize: 10,color: Colors.white))
                     :Text(plasticType, style: TextStyle(fontSize: 20,color: Colors.white)),
+                SizedBox(height:10),
 
-                Text("${result.substring(16,18)}%", style: TextStyle(color: Colors.blue, fontSize: 25))
+                Text("Confidence : ${result.substring(16,18)}%", style: TextStyle(color: Colors.blue, fontSize: 20))
               ])
 
 
@@ -552,6 +557,30 @@ class _MyHomePageState extends State<MyHomePage> {
         GestureDetector(
           onTap: (){
             getImageFromCamera(ImageSource.camera);
+            classifyImage().then((_){
+
+              if(result.contains("pvc")){
+                setState(() {
+                  plasticType = "PVC";
+                });
+              }else if(result.contains("합성고무")){
+                setState(() {
+                  plasticType = "Synthetic rubber";
+                });
+              }else if(result.contains("pet")){
+                setState(() {
+                  plasticType = "PET";
+                });
+              }else if(result.contains("hdpe")){
+                setState(() {
+                  plasticType = "HDPE";
+                });
+              }else {
+                setState(() {
+                  plasticType = "Error";
+                });
+              }
+            });
 
 
           },
