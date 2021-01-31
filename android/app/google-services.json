@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "828177968522",
+    "project_id": "plastic-island",
+    "storage_bucket": "plastic-island.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:828177968522:android:bd4034c31a1c5b51096c73",
+        "android_client_info": {
+          "package_name": "com.example.plastic_island"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "828177968522-gnl07djnpb1f65ido9hq9uuotvm2bme9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArnLpHrjMhEVmErgv5qRvXKPikLYaZnaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "828177968522-gnl07djnpb1f65ido9hq9uuotvm2bme9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

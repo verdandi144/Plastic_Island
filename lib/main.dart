@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:bubble/bubble.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -40,8 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
   final _picker = ImagePicker();
   File _image;
   bool hasImage=false;
-  String path;
-  String result;
+  String path='';
+  String result='';
+  String plasticType='';
+  String confidence='';
+
 
   @override
   void initState() {
@@ -54,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+
   void _test() async {
     var data = await getData('http://10.0.2.2:5000/');
         var decodedData = jsonDecode(data);
@@ -63,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future classifyImage() async {
     await Tflite.loadModel(model: "plastic/converted_model.tflite",labels: "plastic/labels.txt");
     var output = await Tflite.runModelOnImage(path: path);
-    setState(() {
+    setState((){
       result = output.toString();
     });
   }
@@ -83,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   }
+
   Widget emblemPage(){
     return Container(
         width:MediaQuery.of(context).size.width,
@@ -141,22 +147,25 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       child: hasImage?
         Column(children: [
-          SizedBox(height:30),
-          Container(
-            width:300,
-            height: 500,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white,width: 2),
-              borderRadius: BorderRadius.all(
-                Radius.circular(10)
+          SizedBox(height:10),
+          Stack(
+            alignment: Alignment.center,
+              children: [
+            Container(
+              width:300,
+              height: 500,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white,width: 2),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(10)
+                  ),
+                  image: DecorationImage(
+                      image: FileImage(_image),
+                      fit: BoxFit.cover
+                  )
               ),
-                image: DecorationImage(
-                    image: FileImage(_image),
-                    fit: BoxFit.cover
-                )
             ),
-          ),
-            GestureDetector(
+                GestureDetector(
                 onTap: (){
                   setState(() {
                     hasImage=false;
@@ -171,15 +180,28 @@ class _MyHomePageState extends State<MyHomePage> {
                       borderRadius: BorderRadius.all(
                           Radius.circular(10)
                       ),
-                      color: Colors.green,
+                      color: Color(0xaa5ca08e),
                     ),
                     child: Icon(Icons.delete,size: 50, color: Colors.white,)
-                )),
-          result==null?Text("no result") : Text(result)
+                ))
+
+          ]),
+          result==null? Text("no result") : Column(
+              children: [
+                plasticType=="PVC"? Text("Recycled!", style : TextStyle(color: Colors.green, fontSize: 25,fontWeight: FontWeight.bold)):
+                plasticType=="Melamine"? Text("Not Recycled!", style : TextStyle(color: Colors.red, fontSize: 25,fontWeight: FontWeight.bold)):
+                plasticType=="Synthetic rubber"? Text("Not Recycled!", style : TextStyle(color: Colors.red, fontSize: 25,fontWeight: FontWeight.bold)):
+                plasticType=="PET"? Text("Recycled!", style : TextStyle(color: Colors.green, fontSize: 25,fontWeight: FontWeight.bold)):
+                plasticType=="HDPE"? Text("Recycled!", style : TextStyle(color: Colors.green, fontSize: 25,fontWeight: FontWeight.bold)): SizedBox.shrink(),
+
+                plasticType=="PET"? Text("This is a recyclable \"$plasticType\", don't forget to remove the label paper and dispose :)", style: TextStyle(fontSize: 10,color: Colors.white))
+                    :Text(plasticType, style: TextStyle(fontSize: 20,color: Colors.white)),
+
+                Text("${result.substring(16,18)}%", style: TextStyle(color: Colors.blue, fontSize: 25))
+              ])
+
 
         ])
-
-
           :
       Column(
 
@@ -190,13 +212,74 @@ class _MyHomePageState extends State<MyHomePage> {
         GestureDetector(
           onTap: (){
             getImageFromCamera(ImageSource.camera);
-            classifyImage();
+
+
           },
           child:Container(
               child: Icon(Icons.camera_alt,size:200,color: Colors.green,)
         )
         )
       ])
+    );
+  }
+  Widget greenCardPage(){
+
+    return Container(
+
+
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('images/Emblem_background.jpg'),
+                fit: BoxFit.cover
+            )
+        ),
+      child: Column(
+
+        children: [
+
+          SizedBox(height:30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+
+              children: [
+            Bubble(
+              nip: BubbleNip.rightBottom,
+              child: Text('My Point', style: TextStyle(color: Colors.white,fontSize: 20)),
+              color: Colors.green,
+            ),
+
+            SizedBox(width:15),
+            Container(
+              width: 150,
+              height:50,
+              alignment: Alignment.center,
+              child: Text("\$ 10000",style: TextStyle(fontSize: 20)),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey,width: 2),
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(10)
+                  ),
+                color: Colors.white,
+              ),
+            )
+
+
+          ]),
+          SizedBox(height:40),
+          Container(
+            width:250,
+              height:400,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('images/GreenCard.png'),
+                      fit: BoxFit.cover
+                  )
+              )
+          )
+
+        ]
+      )
+
     );
   }
 
@@ -229,7 +312,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     emblemPage(),
                     cameraPage(),
-                    Image(image:AssetImage('images/rabbit.jpg'))
+                    greenCardPage()
                   ]
               ),
               /*floatingActionButton: FloatingActionButton(
