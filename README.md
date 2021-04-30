@@ -1,4 +1,4 @@
-# plastic_island
+# Plastic Island(어떤 플라스틱인지 알려주고, 재활용 가능여부 자동으로 알려주는 앱)
 
 This app is plastic island
 
