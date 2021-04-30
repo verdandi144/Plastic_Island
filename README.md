@@ -37,24 +37,26 @@ Flutter과 AI를 우리 프로젝트 기술의 중심으로두고, 공동창업�
 
 ## Emblem(플라스틱 사진을 서버로 전송해줄때마다 찍어주는 쿠폰!)
 
-9개나 모은 쿠폰! 
-
-![KakaoTalk_20210427_165541991_02](https://user-images.githubusercontent.com/42003685/116653274-d0b16100-a9c1-11eb-9351-b41a29097bf2.jpg)
-
-쿠폰 10개 다 찍혔을때!
-
-![KakaoTalk_20210427_165541991_01](https://user-images.githubusercontent.com/42003685/116653285-d8710580-a9c1-11eb-9bbf-c5ec5c4e5e4c.jpg)
+![KakaoTalk_20210422_130852305](https://user-images.githubusercontent.com/42003685/116658435-e6775400-a9ca-11eb-89c4-09dfdbc98009.jpg)
 
 AI camera를 이용해 플라스틱이 보이는 사진을 찍으면, 플라스틱인지 식별한 후 맞다면, 이 사진을 서버로 전송하고 저장하는 방식으로 구현하여, 이에 대한 감사함?으로 쿠폰을 찍어주는 컨셉으로 페이지를 제작하려고하였지만, 시간내에 기획한것만큼 제작할 수 없다고 판단하여, 할수있는만큼만 표현해보았답니다 ㅜ_ㅜ;
 
 
 ## AI Camera(사진을 찍으면 AI가 자동으로 어떤 플라스틱인지 식별해주고, 재활용가능여부 알려줘요!)
 
-책상위에 나뒹굴던 코카콜라
+책상위에 나뒹굴던 코카콜라 PET병
 
-![KakaoTalk_20210427_165541991](https://user-images.githubusercontent.com/42003685/116653157-91831000-a9c1-11eb-8d98-12e7b47327cf.jpg)
+![AI Camera](https://user-images.githubusercontent.com/42003685/116660574-30ae0480-a9ce-11eb-9c53-d0b7396ed934.gif)
+
+마우스를 찍어보았어요!
+
+![AI Camera](https://user-images.githubusercontent.com/42003685/116660574-30ae0480-a9ce-11eb-9c53-d0b7396ed934.gif)
 
 우리 프로젝트 핵심 기능인 AI와 Flutter연동하여 플라스틱 종류와 재활용가능여부를 자동으로 판단해주는 페이지에요!
+
+위 gif에서 보면 아실 수 있듯이 학습된 것들에 대해서는 100%정확히는 구분 못해도, 100%에 최대한 가까운 확률로 구분을 하는것을 볼 수있으실거에요!
+
+하지만 마우스같이 학습되지 않은 것들을 찍으면 아직 학습된 데이터가 많지않아서 정확하지않은 결과가 나오는 것이 아쉽네요 ㅜ_ㅜ;
 
 ## My Green Point(쿠폰 페이지에서 쿠폰을 찍는 만큼 포인트가 적립!)
 
